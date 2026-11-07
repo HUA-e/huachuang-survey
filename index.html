@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>备考经历与培训支出调查</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#fff; --ink:#1a1d23; --sub:#6b7280;
+    --line:#e3e6ea; --brand:#2563eb; --brand-weak:#eff4ff; --warn:#dc2626;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+  .wrap{max-width:640px;margin:0 auto;padding:16px 14px 120px}
+  .card{background:var(--card);border-radius:14px;padding:20px 18px;margin-bottom:14px;
+    box-shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04)}
+  h1{font-size:20px;margin:0 0 14px;line-height:1.4}
+  .lead{color:var(--sub);font-size:14px;line-height:1.75;margin:0 0 12px}
+  .lead b{color:var(--ink)}
+  .q{padding:18px 0;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:none;padding-bottom:4px}
+  .qt{font-size:15.5px;font-weight:600;margin:0 0 4px;line-height:1.55}
+  .qh{font-size:12.5px;color:var(--sub);margin:0 0 10px;font-weight:400}
+  .opt{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border:1px solid var(--line);
+    border-radius:9px;margin-bottom:7px;cursor:pointer;transition:.12s;font-size:15px}
+  .opt:active{background:#f0f2f5}
+  .opt.on{border-color:var(--brand);background:var(--brand-weak)}
+  .opt input{margin:3px 0 0;flex:none;accent-color:var(--brand);width:16px;height:16px}
+  .scale{display:flex;gap:6px;margin-top:8px}
+  .scale .opt{flex:1;justify-content:center;text-align:center;padding:11px 2px;margin:0;font-size:14px}
+  .scale .opt span{display:block;font-size:11px;color:var(--sub);margin-top:2px}
+  .numbox{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:16px;font-family:inherit;background:#fbfcfd}
+  .numbox:focus{outline:none;border-color:var(--brand);background:#fff}
+  .unit{font-size:13px;color:var(--sub);margin-top:5px}
+  .matrix{display:grid;grid-template-columns:1fr;gap:8px}
+  .mrow{display:flex;align-items:center;gap:10px}
+  .mrow label{flex:1;font-size:14.5px;color:#333}
+  .mrow input{width:112px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;
+    font-size:15px;text-align:right;background:#fbfcfd;font-family:inherit}
+  .mrow input:focus{outline:none;border-color:var(--brand);background:#fff}
+  textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:15px;font-family:inherit;resize:vertical;min-height:70px;background:#fbfcfd}
+  textarea:focus{outline:none;border-color:var(--brand);background:#fff}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);
+    backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+  .barin{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .prog{flex:1;height:6px;background:#e8ebef;border-radius:3px;overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:var(--brand);border-radius:3px;transition:width .3s}
+  .pct{font-size:12.5px;color:var(--sub);min-width:34px;text-align:right}
+  button{background:var(--brand);color:#fff;border:none;border-radius:10px;
+    padding:12px 26px;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer}
+  button:disabled{opacity:.45}
+  .err{background:#fef2f2;color:var(--warn);border:1px solid #fecaca;border-radius:9px;
+    padding:11px 13px;font-size:14px;margin-bottom:14px;display:none}
+  .done{text-align:center;padding:60px 20px}
+  .done .ic{font-size:52px;margin-bottom:14px}
+  .hide{display:none!important}
+  .tip{font-size:12.5px;color:var(--sub);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 封面 -->
+  <div id="intro" class="card">
+    <h1>备考经历与培训支出调查</h1>
+    <p class="lead">同学你好，我们是<b>江西财经大学</b>参赛团队，正在做一项关于大学生备考支出与培训消费的调查，用于江西省"华创杯"市场调查分析大赛。</p>
+    <p class="lead">问卷共 <b>33 题</b>，约需 <b>8 分钟</b>。全程<b>匿名</b>，不收集姓名和手机号，数据仅用于学术研究，不会向任何机构提供。</p>
+    <p class="lead">填写提示：本问卷无对错之分，请按真实情况填写。金额题如没有相关支出，填 0 即可。</p>
+    <p class="tip">点击下方按钮开始。你的作答会自动保存，中途退出需重新填写。</p>
+  </div>
+
+  <div id="form"></div>
+
+  <div id="err" class="err"></div>
+
+  <!-- 完成页 -->
+  <div id="done" class="card hide">
+    <div class="done">
+      <div class="ic">✅</div>
+      <h1 style="font-size:19px">提交成功，感谢你的帮助！</h1>
+      <p class="lead">你的每一份回答，都会成为这份调研报告的一部分。<br>祝备考顺利，早日上岸。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="bar" id="bar">
+  <div class="barin">
+    <div class="prog"><i id="pbar"></i></div>
+    <div class="pct" id="pct">0%</div>
+    <button id="btn">开始</button>
+  </div>
+</div>
+
+<script>
+/* ============ 配置：把这两个值换成你自己的 ============ */
+const SUPABASE_URL = "https://ttbjjlhhkrdlrbxzxazb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_C_zh7d3v0pMsJA7cJTdfVg_PCheDzkj";
+
+/* ============ 题库 ============ */
+const Q = [
+ {id:"S1",t:"你目前是？",ty:"radio",opts:["全日制在校本科生或研究生","非全日制在读","已毕业工作","都不是"],end:[2,3]},
+ {id:"S2",t:"你所在学校位于？",ty:"radio",opts:["江西省内","江西省外"],end:[1]},
+ {id:"S3",t:"过去 12 个月，你是否为下列考试进行过系统备考（有固定学习计划并投入时间）？",ty:"radio",opts:["是","否"],end:[1]},
+ {id:"S4",t:"你最主要的备考类型是？",ty:"radio",opts:["考研","国考","省考","事业单位或选调","其他（请注明）"]},
+ {id:"S5",t:"目前处于什么阶段？",ty:"radio",opts:["刚开始（3 个月内）","3—6 个月","6—12 个月","已考完等结果","已考完并有结果"]},
+
+ {id:"Q6",t:"过去 12 个月，你在备考上的总支出约为多少元？",h:"含培训、教材、自习室、租房、报名费、差旅；完全没有支出请填 0",ty:"num",unit:"元"},
+ {id:"Q7",t:"请拆分一下大致金额",h:"七项加起来应接近 Q6，填不准没关系；没有的项目填 0",ty:"matrix",
+   rows:["培训课程费","教材、资料、真题","付费自习室、考研寄宿","租房或住宿","考试报名费","交通、差旅","其他"],unit:"元"},
+
+ {id:"Q8",t:"你报过培训班吗？",ty:"radio",opts:["报过，线上","报过，线下","线上和线下都报过","没报过"],skipTo:{3:"Q12"}},
+ {id:"Q9",t:"你报的班中，有没有“协议班”？",h:"即签协议、约定考试不过就退款的班型",ty:"radio",opts:["有","没有","不清楚"],skipTo:{1:"Q21",2:"Q21"}},
+
+ {id:"Q10",t:"你为协议班支付的总金额约为多少元？",ty:"num",unit:"元",onlyIf:"xieyi"},
+ {id:"Q11",t:"协议班的费用是怎么支付的？",ty:"radio",opts:["一次性付清","分期付款给机构","用教育贷或信用分期（如花呗、京东白条）","家人代付"],onlyIf:"xieyi"},
+ {id:"Q12",t:"你没有报班主要是因为？",ty:"checkbox",opts:["费用太高","觉得效果不确定","自学足够","没找到合适的","其他"],onlyIf:"noban"},
+
+ {id:"Q13",t:"你签订协议的时间大约是？",ty:"text",ph:"例如：2026 年 3 月",onlyIf:"xieyi"},
+ {id:"Q14",t:"签约时，你对退费条款的了解程度是？",ty:"radio",opts:["很清楚，逐条看过","大概知道","销售说过但没细看","完全不了解"],onlyIf:"xieyi"},
+ {id:"Q15",t:"你是否已经申请过退费？",ty:"radio",opts:["已申请","还没到申请条件","不符合退费条件"],onlyIf:"xieyi"},
+ {id:"Q16",t:"退费最终结果如何？",ty:"radio",opts:["全额到账","部分到账","至今未到账","仍在协商中"],onlyIf:"xieyi"},
+ {id:"Q17",t:"从提交申请到收到退款（或今天），大约等了多久？",ty:"radio",opts:["1 个月内","1—3 个月","3—6 个月","6—12 个月","超过 1 年"],onlyIf:"xieyi"},
+ {id:"Q18",t:"机构采用过以下哪种方式？",ty:"checkbox",opts:["按期正常退","分期退","以物抵债","要求拉新学员","建议放弃部分退款","未联系"],onlyIf:"xieyi"},
+ {id:"Q19",t:"你对“协议班”这件事现在的态度是？",ty:"radio",opts:["值得，下次还会报","一般，说不上好坏","后悔，不会再报","会劝别人别报"],onlyIf:"xieyi"},
+ {id:"Q20",t:"机构名称（选填）",h:"可只填首字，例如“中”",ty:"text",ph:"选填",onlyIf:"xieyi",optional:true},
+
+ {id:"Q21",t:"我身边的同学或朋友中，报培训班的比例很高",ty:"scale"},
+ {id:"Q22",t:"别人都在报班，会让我觉得不报就落后了",ty:"scale"},
+ {id:"Q23",t:"我了解各个培训机构之间的差别",ty:"scale"},
+ {id:"Q24",t:"我信任培训机构宣传的“通过率”“押题率”",ty:"scale"},
+ {id:"Q25",t:"我在报班前会认真比较不同机构的价格和条款",ty:"scale"},
+
+ {id:"Q26",t:"家庭年收入大致区间？",ty:"radio",opts:["5 万以下","5—10 万","10—20 万","20—50 万","50 万以上","不愿透露"]},
+ {id:"Q27",t:"父母最高学历？",ty:"radio",opts:["初中及以下","高中或中专","大专或本科","硕士及以上"]},
+ {id:"Q28",t:"如果备考需要支出 5000 元，你家庭能否立即承担？",ty:"radio",opts:["完全没问题","需要商量","有困难","完全无法承担"]},
+ {id:"Q29",t:"你每月生活费大约多少元？",ty:"num",unit:"元"},
+
+ {id:"Q30",t:"我担心自己花在备考上的钱“打了水漂”",ty:"scale"},
+ {id:"Q31",t:"备考让我感到焦虑",ty:"scale"},
+ {id:"Q32",t:"我对这次“上岸”有信心",ty:"scale"},
+
+ {id:"D1",t:"性别",ty:"radio",opts:["男","女","不愿透露"]},
+ {id:"D2",t:"年级",ty:"radio",opts:["大一或大二","大三","大四","研究生"]},
+ {id:"D3",t:"专业大类",ty:"radio",opts:["理工","经管","文史","法学","其他"]},
+ {id:"D4",t:"生源地",ty:"radio",opts:["城市","县城","乡镇或农村"]},
+ {id:"D5",t:"学校名称（选填）",ty:"text",ph:"选填",optional:true},
+
+ {id:"A1",t:"请在本题选择“比较不同意”",h:"这是一道注意力检测题",ty:"radio",opts:["非常同意","比较同意","一般","比较不同意","非常不同意"],trap:true},
+ {id:"A2",t:"我在填写本问卷时是认真的",ty:"radio",opts:["非常同意","比较同意","一般","比较不同意","非常不同意"]},
+ {id:"O1",t:"如果只能对培训机构、学校或监管部门说一句话，你想说什么？",ty:"textarea",ph:"选填，50 字以内",optional:true,maxlen:50}
+];
+
+const SCALE_LBL = ["非常不同意","不同意","一般","同意","非常同意"];
+const SCALE_TIP = ["","","","",""];
+
+/* ============ 状态 ============ */
+const A = {};                 // 答案
+let startedAt = null;         // 打开问卷时间
+let submitted = false;
+const clientId = getClientId();
+
+function getClientId(){
+  let v = localStorage.getItem("survey_cid");
+  if(!v){ v = "c" + Date.now().toString(36) + Math.random().toString(36).slice(2,10); localStorage.setItem("survey_cid", v); }
+  return v;
+}
+
+/* ============ 可见性判断 ============ */
+function bandType(){ return A.Q8 === "没报过" ? "noban" : "ban"; }
+function xieyiType(){ return A.Q9 === "有" ? "xieyi" : "noxieyi"; }
+
+function visible(q){
+  if(q.onlyIf === "xieyi" && xieyiType() !== "xieyi") return false;
+  if(q.onlyIf === "noban" && bandType() !== "noban") return false;
+  return true;
+}
+
+/* 计算当前可见的题目列表（考虑跳过逻辑） */
+function isTerminated(){
+  for(const q of Q){
+    if(!q.end || A[q.id] === undefined) continue;
+    const idx = q.opts.indexOf(A[q.id]);
+    if(idx >= 0 && q.end.includes(idx)) return true;
+  }
+  return false;
+}
+
+function visibleList(){
+  if(isTerminated()) return [];
+  const out = [];
+  let skipTo = null;
+  for(const q of Q){
+    if(skipTo && q.id !== skipTo) continue;
+    if(skipTo && q.id === skipTo) skipTo = null;
+    if(!visible(q)) continue;
+    out.push(q);
+    // 触发跳过：把当前题已选的选项映射到目标题
+    if(q.skipTo && A[q.id] !== undefined){
+      const idx = q.opts ? q.opts.indexOf(A[q.id]) : -1;
+      if(q.skipTo[idx]) skipTo = q.skipTo[idx];
+    }
+  }
+  return out;
+}
+
+/* ============ 渲染 ============ */
+const formEl = document.getElementById("form");
+
+function render(){
+  const list = visibleList();
+  formEl.innerHTML = "";
+  if(isTerminated()){
+    formEl.innerHTML = '<div class="card"><div class="done"><div class="ic">🙏</div>'
+      + '<h1 style="font-size:18px">感谢参与</h1>'
+      + '<p class="lead">本问卷面向正在备考的在校学生，你的情况不在本次调研范围内。<br>仍然感谢你点开这份问卷。</p></div></div>';
+    document.getElementById("bar").classList.add("hide");
+    return;
+  }
+  for(const q of list){
+    formEl.appendChild(buildQ(q));
+  }
+  updateProgress(list);
+}
+
+function buildQ(q){
+  const d = document.createElement("div");
+  d.className = "card";
+  d.dataset.qid = q.id;
+
+  const t = document.createElement("p");
+  t.className = "qt";
+  t.textContent = q.id.startsWith("Q") || q.id.startsWith("S") || q.id.startsWith("D") || q.id.startsWith("A") || q.id.startsWith("O")
+    ? q.id + ". " + q.t : q.t;
+  d.appendChild(t);
+
+  if(q.h){
+    const h = document.createElement("p");
+    h.className = "qh"; h.textContent = q.h;
+    d.appendChild(h);
+  }
+
+  if(q.ty === "radio" || q.ty === "checkbox"){
+    q.opts.forEach((o,i)=>{
+      const lab = document.createElement("label");
+      lab.className = "opt";
+      const inp = document.createElement("input");
+      inp.type = q.ty === "radio" ? "radio" : "checkbox";
+      inp.name = q.id; inp.value = o;
+      const span = document.createElement("span");
+      span.textContent = o;
+      lab.appendChild(inp); lab.appendChild(span);
+      if(q.ty === "radio" ? A[q.id] === o : (A[q.id]||[]).includes(o)){ lab.classList.add("on"); inp.checked = true; }
+      lab.addEventListener("click", e=>{
+        // label 内的 input 会自己触发一次 click，拦住它，避免重复计数
+        if(e.target !== inp) e.preventDefault();
+        if(q.ty === "radio"){
+          A[q.id] = o;
+          d.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));
+          lab.classList.add("on");
+          inp.checked = true;
+        } else {
+          const cur = A[q.id] || [];
+          const k = cur.indexOf(o);
+          if(k>=0) cur.splice(k,1); else cur.push(o);
+          A[q.id] = cur;
+          lab.classList.toggle("on", cur.includes(o));
+          inp.checked = cur.includes(o);
+        }
+        if(q.ty === "radio" && q.skipTo){ setTimeout(render, 120); }
+        else updateProgress();
+      });
+      d.appendChild(lab);
+    });
+  }
+
+  else if(q.ty === "scale"){
+    const box = document.createElement("div");
+    box.className = "scale";
+    SCALE_LBL.forEach((lbl,i)=>{
+      const lab = document.createElement("label");
+      lab.className = "opt";
+      const inp = document.createElement("input");
+      inp.type = "radio"; inp.name = q.id; inp.value = i+1;
+      inp.style.display = "none";
+      const span = document.createElement("span");
+      span.textContent = (i+1);
+      const sub = document.createElement("span");
+      sub.textContent = lbl;
+      sub.style.fontSize = "10.5px";
+      span.appendChild(sub);
+      lab.appendChild(inp); lab.appendChild(span);
+      if(String(A[q.id]) === String(i+1)) lab.classList.add("on");
+      lab.addEventListener("click", ()=>{
+        A[q.id] = i+1;
+        box.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));
+        lab.classList.add("on");
+        updateProgress();
+      });
+      box.appendChild(lab);
+    });
+    d.appendChild(box);
+    const hint = document.createElement("div");
+    hint.className = "qh";
+    hint.style.marginTop = "6px";
+    hint.textContent = "1 = 非常不同意　5 = 非常同意";
+    d.appendChild(hint);
+  }
+
+  else if(q.ty === "num"){
+    const inp = document.createElement("input");
+    inp.type = "number"; inp.inputMode = "numeric"; inp.min = "0";
+    inp.className = "numbox"; inp.placeholder = "0";
+    if(A[q.id] !== undefined) inp.value = A[q.id];
+    inp.addEventListener("input", ()=>{
+      A[q.id] = inp.value === "" ? undefined : Number(inp.value);
+      updateProgress();
+    });
+    d.appendChild(inp);
+    if(q.unit){
+      const u = document.createElement("div");
+      u.className = "unit"; u.textContent = q.unit;
+      d.appendChild(u);
+    }
+  }
+
+  else if(q.ty === "matrix"){
+    const g = document.createElement("div"); g.className = "matrix";
+    q.rows.forEach(r=>{
+      const row = document.createElement("div"); row.className = "mrow";
+      const lb = document.createElement("label"); lb.textContent = r;
+      const inp = document.createElement("input");
+      inp.type = "number"; inp.inputMode = "numeric"; inp.min="0"; inp.placeholder = "0";
+      const store = A[q.id] || {};
+      if(store[r] !== undefined) inp.value = store[r];
+      inp.addEventListener("input", ()=>{
+        const s = A[q.id] || {};
+        s[r] = inp.value === "" ? undefined : Number(inp.value);
+        A[q.id] = s;
+        updateProgress();
+      });
+      row.appendChild(lb); row.appendChild(inp);
+      g.appendChild(row);
+    });
+    d.appendChild(g);
+  }
+
+  else if(q.ty === "text"){
+    const inp = document.createElement("input");
+    inp.type = "text"; inp.className = "numbox"; inp.placeholder = q.ph || "";
+    if(A[q.id] !== undefined) inp.value = A[q.id];
+    inp.addEventListener("input", ()=>{ A[q.id] = inp.value; updateProgress(); });
+    d.appendChild(inp);
+  }
+
+  else if(q.ty === "textarea"){
+    const ta = document.createElement("textarea");
+    ta.placeholder = q.ph || "";
+    ta.maxLength = q.maxlen || 200;
+    if(A[q.id] !== undefined) ta.value = A[q.id];
+    ta.addEventListener("input", ()=>{ A[q.id] = ta.value; updateProgress(); });
+    d.appendChild(ta);
+  }
+
+  return d;
+}
+
+/* ============ 进度与校验 ============ */
+const btn = document.getElementById("btn");
+const pbar = document.getElementById("pbar");
+const pctEl = document.getElementById("pct");
+
+function answered(q){
+  const v = A[q.id];
+  if(q.optional) return true;
+  if(v === undefined || v === null || v === "") return false;
+  if(Array.isArray(v) && v.length === 0) return false;
+  if(q.ty === "matrix" && (!v || Object.keys(v).length === 0)) return false;
+  return true;
+}
+
+function updateProgress(list){
+  const L = list || visibleList();
+  const total = L.length;
+  const done = L.filter(answered).length;
+  const p = total ? Math.round(done/total*100) : 0;
+  pbar.style.width = p + "%";
+  pctEl.textContent = p + "%";
+}
+
+/* ============ 提交 ============ */
+function validate(){
+  if(isTerminated()) return {ok:false, term:true};
+  const list = visibleList();
+  for(const q of list){
+    if(!answered(q)) return {ok:false, q};
+  }
+  // 测谎题
+  if(A.A1 !== "比较不同意") return {ok:false, trap:true};
+  return {ok:true};
+}
+
+function quotaCell(){
+  const map = {"考研":"KAOYAN","国考":"GUOKAO","省考":"SHENGKAO","事业单位或选调":"SHIYE","其他（请注明）":"OTHER"};
+  const g = {"大一或大二":"12","大三":"3","大四":"4","研究生":"G"}[A.D2] || "X";
+  return (map[A.S4]||"NA") + "-" + g;
+}
+
+async function submit(){
+  const v = validate();
+  const errEl = document.getElementById("err");
+  if(!v.ok){
+    errEl.style.display = "block";
+    if(v.trap){ errEl.textContent = "注意力检测题作答有误，请重新检查后提交。"; }
+    else { errEl.textContent = "还有题目未完成：「" + (v.q.t) + "」";
+           document.querySelector('[data-qid="'+v.q.id+'"]').scrollIntoView({behavior:"smooth",block:"center"}); }
+    return;
+  }
+  errEl.style.display = "none";
+  btn.disabled = true; btn.textContent = "提交中…";
+
+  const now = new Date();
+  const dur = Math.max(1, Math.round((now - startedAt)/1000));
+
+  const payload = {
+    client_id: clientId,
+    started_at: new Date(startedAt).toISOString(),
+    duration_sec: dur,
+    ip_hash: null,
+    user_agent: navigator.userAgent,
+    screen_size: screen.width + "x" + screen.height,
+    referrer: document.referrer || "direct",
+    quota_cell: quotaCell(),
+    answers: A,
+    q_s1: A.S1, q_s2: A.S2, q_s3: A.S3, q_s4: A.S4, q_s5: A.S5,
+    q6_total: A.Q6 ?? null,
+    q8_class: A.Q8 ?? null,
+    q9_xieyi: A.Q9 ?? null,
+    q10_amount: A.Q10 ?? null,
+    q16_refund: A.Q16 ?? null,
+    d1_gender: A.D1, d2_grade: A.D2, d3_major: A.D3, d4_origin: A.D4,
+    a1_trap_ok: A.A1 === "比较不同意",
+    a2_sincere: A.A2 ?? null,
+    is_valid: true
+  };
+
+  try{
+    const r = await fetch(SUPABASE_URL + "/rest/v1/responses", {
+      method:"POST",
+      headers:{
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type":"application/json",
+        "Prefer":"return=minimal"
+      },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok){
+      const txt = await r.text();
+      throw new Error(r.status + " " + txt.slice(0,200));
+    }
+    submitted = true;
+    document.getElementById("form").innerHTML = "";
+    document.getElementById("intro").classList.add("hide");
+    document.getElementById("done").classList.remove("hide");
+    document.getElementById("bar").classList.add("hide");
+    window.scrollTo(0,0);
+  }catch(e){
+    btn.disabled = false; btn.textContent = "提交";
+    errEl.style.display = "block";
+    errEl.textContent = "提交失败，请检查网络后重试。如反复失败请截图联系调研员。（" + e.message + "）";
+  }
+}
+
+/* ============ 启动 ============ */
+btn.addEventListener("click", ()=>{
+  if(!startedAt){
+    startedAt = Date.now();
+    document.getElementById("intro").classList.add("hide");
+    render();
+    btn.textContent = "提交";
+    btn.disabled = false;
+    updateProgress();
+    return;
+  }
+  submit();
+});
+
+document.addEventListener("click", ()=>{ if(startedAt) updateProgress(); });
+</script>
+</body>
+</html>
