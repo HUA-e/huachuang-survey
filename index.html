@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>备考经历与培训支出调查</title>
+<title>大学生备考投入与培训消费调查</title>
 <style>
   :root{
     --bg:#f5f6f8; --card:#fff; --ink:#1a1d23; --sub:#6b7280;
@@ -23,6 +23,8 @@
   .q:last-child{border-bottom:none;padding-bottom:4px}
   .qt{font-size:15.5px;font-weight:600;margin:0 0 4px;line-height:1.55}
   .qh{font-size:12.5px;color:var(--sub);margin:0 0 10px;font-weight:400}
+  .note{background:#f0f7ff;border-left:3px solid var(--brand);border-radius:6px;
+    padding:10px 12px;font-size:13.5px;color:#33506e;margin:0 0 14px;line-height:1.65}
   .opt{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border:1px solid var(--line);
     border-radius:9px;margin-bottom:7px;cursor:pointer;transition:.12s;font-size:15px}
   .opt:active{background:#f0f2f5}
@@ -30,17 +32,11 @@
   .opt input{margin:3px 0 0;flex:none;accent-color:var(--brand);width:16px;height:16px}
   .scale{display:flex;gap:6px;margin-top:8px}
   .scale .opt{flex:1;justify-content:center;text-align:center;padding:11px 2px;margin:0;font-size:14px}
-  .scale .opt span{display:block;font-size:11px;color:var(--sub);margin-top:2px}
+  .scale .opt span{display:block;font-size:10.5px;color:var(--sub);margin-top:2px}
   .numbox{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
     font-size:16px;font-family:inherit;background:#fbfcfd}
   .numbox:focus{outline:none;border-color:var(--brand);background:#fff}
   .unit{font-size:13px;color:var(--sub);margin-top:5px}
-  .matrix{display:grid;grid-template-columns:1fr;gap:8px}
-  .mrow{display:flex;align-items:center;gap:10px}
-  .mrow label{flex:1;font-size:14.5px;color:#333}
-  .mrow input{width:112px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;
-    font-size:15px;text-align:right;background:#fbfcfd;font-family:inherit}
-  .mrow input:focus{outline:none;border-color:var(--brand);background:#fff}
   textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
     font-size:15px;font-family:inherit;resize:vertical;min-height:70px;background:#fbfcfd}
   textarea:focus{outline:none;border-color:var(--brand);background:#fff}
@@ -64,20 +60,17 @@
 <body>
 <div class="wrap">
 
-  <!-- 封面 -->
   <div id="intro" class="card">
-    <h1>备考经历与培训支出调查</h1>
-    <p class="lead">同学你好，我们是<b>江西财经大学</b>参赛团队，正在做一项关于大学生备考支出与培训消费的调查，用于江西省"华创杯"市场调查分析大赛。</p>
-    <p class="lead">问卷共 <b>33 题</b>，约需 <b>8 分钟</b>。全程<b>匿名</b>，不收集姓名和手机号，数据仅用于学术研究，不会向任何机构提供。</p>
-    <p class="lead">填写提示：本问卷无对错之分，请按真实情况填写。金额题如没有相关支出，填 0 即可。</p>
-    <p class="tip">点击下方按钮开始。你的作答会自动保存，中途退出需重新填写。</p>
+    <h1>大学生备考投入与培训消费调查</h1>
+    <p class="lead">同学你好，我们正在做一项关于大学生备考支出与培训消费的调查，用于江西省"华创杯"市场调查分析大赛。</p>
+    <p class="lead">约 <b>20 题</b>，需要 <b>5–8 分钟</b>。全程<b>匿名</b>，不收集姓名、手机号和学校全称，数据仅用于学术研究。</p>
+    <p class="lead">大部分题目是选择题，没有对错之分，按真实情况填就好。金额题如没有相关支出，选"0"即可。</p>
+    <p class="tip">作答过程中如中途退出，需要重新填写。</p>
   </div>
 
   <div id="form"></div>
-
   <div id="err" class="err"></div>
 
-  <!-- 完成页 -->
   <div id="done" class="card hide">
     <div class="done">
       <div class="ic">✅</div>
@@ -97,70 +90,129 @@
 </div>
 
 <script>
-/* ============ 配置：把这两个值换成你自己的 ============ */
+/* ============ 配置 ============ */
 const SUPABASE_URL = "https://ttbjjlhhkrdlrbxzxazb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_C_zh7d3v0pMsJA7cJTdfVg_PCheDzkj";
 
 /* ============ 题库 ============ */
+/* onlyIf: 条件显示；end: 选这些索引则结束问卷 */
 const Q = [
- {id:"S1",t:"你目前是？",ty:"radio",opts:["全日制在校本科生或研究生","非全日制在读","已毕业工作","都不是"],end:[2,3]},
- {id:"S2",t:"你所在学校位于？",ty:"radio",opts:["江西省内","江西省外"],end:[1]},
- {id:"S3",t:"过去 12 个月，你是否为下列考试进行过系统备考（有固定学习计划并投入时间）？",ty:"radio",opts:["是","否"],end:[1]},
- {id:"S4",t:"你最主要的备考类型是？",ty:"radio",opts:["考研","国考","省考","事业单位或选调","其他（请注明）"]},
- {id:"S5",t:"目前处于什么阶段？",ty:"radio",opts:["刚开始（3 个月内）","3—6 个月","6—12 个月","已考完等结果","已考完并有结果"]},
+  /* ---------- 一、甄别 ---------- */
+  {id:"S1",g:"甄别",t:"您目前是否在江西省内高校全日制在读？",ty:"radio",
+   opts:["是","否"],end:[1]},
 
- {id:"Q6",t:"过去 12 个月，你在备考上的总支出约为多少元？",h:"含培训、教材、自习室、租房、报名费、差旅；完全没有支出请填 0",ty:"num",unit:"元"},
- {id:"Q7",t:"请拆分一下大致金额",h:"七项加起来应接近 Q6，填不准没关系；没有的项目填 0",ty:"matrix",
-   rows:["培训课程费","教材、资料、真题","付费自习室、考研寄宿","租房或住宿","考试报名费","交通、差旅","其他"],unit:"元"},
+  {id:"S2",g:"甄别",t:"过去 24 个月，您是否系统备考过下列考试？",h:"系统备考指有固定学习计划并持续投入时间；可多选",ty:"checkbox",
+   opts:["考研","国考","江西省考","事业单位或选调","教师招聘","其他职业资格","以上都没有"],
+   endIfAny:["以上都没有"]},
 
- {id:"Q8",t:"你报过培训班吗？",ty:"radio",opts:["报过，线上","报过，线下","线上和线下都报过","没报过"],skipTo:{3:"Q12"}},
- {id:"Q9",t:"你报的班中，有没有“协议班”？",h:"即签协议、约定考试不过就退款的班型",ty:"radio",opts:["有","没有","不清楚"],skipTo:{1:"Q21",2:"Q21"}},
+  {id:"S3",g:"甄别",t:"您最近一次系统备考的是？",ty:"radio",
+   opts:["考研","国考或省考","事业单位或选调","教师招聘","职业资格","已考完，暂时不打算再考"]},
 
- {id:"Q10",t:"你为协议班支付的总金额约为多少元？",ty:"num",unit:"元",onlyIf:"xieyi"},
- {id:"Q11",t:"协议班的费用是怎么支付的？",ty:"radio",opts:["一次性付清","分期付款给机构","用教育贷或信用分期（如花呗、京东白条）","家人代付"],onlyIf:"xieyi"},
- {id:"Q12",t:"你没有报班主要是因为？",ty:"checkbox",opts:["费用太高","觉得效果不确定","自学足够","没找到合适的","其他"],onlyIf:"noban"},
+  {id:"S4",g:"甄别",t:"过去 24 个月，您是否买过付费备考服务？",h:"付费备考服务包括网课、面授班、一对一辅导、付费题库、自习室会员等",ty:"radio",
+   opts:["是","否"],skipTo:{1:"A1"}},
 
- {id:"Q13",t:"你签订协议的时间大约是？",ty:"text",ph:"例如：2026 年 3 月",onlyIf:"xieyi"},
- {id:"Q14",t:"签约时，你对退费条款的了解程度是？",ty:"radio",opts:["很清楚，逐条看过","大概知道","销售说过但没细看","完全不了解"],onlyIf:"xieyi"},
- {id:"Q15",t:"你是否已经申请过退费？",ty:"radio",opts:["已申请","还没到申请条件","不符合退费条件"],onlyIf:"xieyi"},
- {id:"Q16",t:"退费最终结果如何？",ty:"radio",opts:["全额到账","部分到账","至今未到账","仍在协商中"],onlyIf:"xieyi"},
- {id:"Q17",t:"从提交申请到收到退款（或今天），大约等了多久？",ty:"radio",opts:["1 个月内","1—3 个月","3—6 个月","6—12 个月","超过 1 年"],onlyIf:"xieyi"},
- {id:"Q18",t:"机构采用过以下哪种方式？",ty:"checkbox",opts:["按期正常退","分期退","以物抵债","要求拉新学员","建议放弃部分退款","未联系"],onlyIf:"xieyi"},
- {id:"Q19",t:"你对“协议班”这件事现在的态度是？",ty:"radio",opts:["值得，下次还会报","一般，说不上好坏","后悔，不会再报","会劝别人别报"],onlyIf:"xieyi"},
- {id:"Q20",t:"机构名称（选填）",h:"可只填首字，例如“中”",ty:"text",ph:"选填",onlyIf:"xieyi",optional:true},
+  /* ---------- 二、备考投入 ---------- */
+  {id:"P1",g:"投入",t:"过去 12 个月，您备考的总支出大约是多少？",h:"包括培训、资料、自习室、租房、报名费、交通差旅等；完全没有支出请选第一项",ty:"radio",
+   opts:["0 元","1–1000 元","1001–3000 元","3001–5000 元","5001–1 万","1–2 万","2 万以上"]},
 
- {id:"Q21",t:"我身边的同学或朋友中，报培训班的比例很高",ty:"scale"},
- {id:"Q22",t:"别人都在报班，会让我觉得不报就落后了",ty:"scale"},
- {id:"Q23",t:"我了解各个培训机构之间的差别",ty:"scale"},
- {id:"Q24",t:"我信任培训机构宣传的“通过率”“押题率”",ty:"scale"},
- {id:"Q25",t:"我在报班前会认真比较不同机构的价格和条款",ty:"scale"},
+  {id:"P2",g:"投入",t:"其中，培训类支出大约是多少？",h:"报班、网课、一对一辅导等",ty:"radio",
+   opts:["0 元","1–1000 元","1001–3000 元","3001–5000 元","5001–1 万","1–2 万","2 万以上"]},
 
- {id:"Q26",t:"家庭年收入大致区间？",ty:"radio",opts:["5 万以下","5—10 万","10—20 万","20—50 万","50 万以上","不愿透露"]},
- {id:"Q27",t:"父母最高学历？",ty:"radio",opts:["初中及以下","高中或中专","大专或本科","硕士及以上"]},
- {id:"Q28",t:"如果备考需要支出 5000 元，你家庭能否立即承担？",ty:"radio",opts:["完全没问题","需要商量","有困难","完全无法承担"]},
- {id:"Q29",t:"你每月生活费大约多少元？",ty:"num",unit:"元"},
+  {id:"P3",g:"投入",t:"您报过的班属于哪些类型？",h:"可多选；没报过班请选最后一项",ty:"checkbox",
+   opts:["基础班 / 系统班","冲刺班 / 押题班","协议班","一对一辅导","只买过资料，没报班"]},
 
- {id:"Q30",t:"我担心自己花在备考上的钱“打了水漂”",ty:"scale"},
- {id:"Q31",t:"备考让我感到焦虑",ty:"scale"},
- {id:"Q32",t:"我对这次“上岸”有信心",ty:"scale"},
+  /* ---------- 三、选择原因（轻题前置） ---------- */
+  {id:"D1",g:"原因",t:"选择（或会考虑）协议班，最主要的原因是？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["不过能退费，风险低","宣传通过率高或有内部资源","身边同学都报","父母要求","被销售说服","有人监督着学","其他"]},
 
- {id:"D1",t:"性别",ty:"radio",opts:["男","女","不愿透露"]},
- {id:"D2",t:"年级",ty:"radio",opts:["大一或大二","大三","大四","研究生"]},
- {id:"D3",t:"专业大类",ty:"radio",opts:["理工","经管","文史","法学","其他"]},
- {id:"D4",t:"生源地",ty:"radio",opts:["城市","县城","乡镇或农村"]},
- {id:"D5",t:"学校名称（选填）",ty:"text",ph:"选填",optional:true},
+  {id:"D2",g:"原因",t:"机构的宣传里，哪句话最能打动您？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["不过全额退","包过 / 保过 / 保上岸","通过率 XX%","命题组老师、内部渠道","限额招生","上岸学员现身说法","都不记得了"]},
 
- {id:"A1",t:"请在本题选择“比较不同意”",h:"这是一道注意力检测题",ty:"radio",opts:["非常同意","比较同意","一般","比较不同意","非常不同意"],trap:true},
- {id:"A2",t:"我在填写本问卷时是认真的",ty:"radio",opts:["非常同意","比较同意","一般","比较不同意","非常不同意"]},
- {id:"O1",t:"如果只能对培训机构、学校或监管部门说一句话，你想说什么？",ty:"textarea",ph:"选填，50 字以内",optional:true,maxlen:50}
+  {id:"D3",g:"原因",t:"报名之前，您查过这家机构的退费口碑吗？",ty:"radio",
+   opts:["认真查过","随便看了一眼","没查过"]},
+
+  /* ---------- 四、协议班参与 ---------- */
+  {id:"A1",g:"协议班",t:"您对「协议班」了解多少？",h:"协议班指与机构签协议、约定考试不过就退费的班型",ty:"radio",
+   opts:["很了解","听说过","完全没听说过"]},
+
+  {id:"A2",g:"协议班",t:"您本人报名过协议班吗？",ty:"radio",
+   opts:["报过","没报过","记不清"],skipTo:{1:"C1",2:"C1"}},
+
+  {id:"A3",g:"协议班",t:"最近一次协议班，实际付了多少钱？",h:"如有多次，填最近一次",ty:"radio",
+   opts:["3000 元以下","3001–8000 元","8001–15000 元","15001–25000 元","25001–40000 元","4 万以上","不方便说"],onlyIf:"xieyi"},
+
+  {id:"A4",g:"协议班",t:"这份协议约定的是哪种退费方式？",ty:"radio",
+   opts:["全额退","退一部分（约 50–80%）","免费重读，不退钱","笔试不过退，面试不过不退","不清楚"],onlyIf:"xieyi"},
+
+  {id:"A5",g:"协议班",t:"付款方式是？",h:"可多选",ty:"checkbox",
+   opts:["一次付清","机构内部分期","分期平台或信用卡","家人代付","其他"],onlyIf:"xieyi"},
+
+  {id:"A6",g:"协议班",t:"报名时，您签了书面协议吗？",ty:"radio",
+   opts:["签了纸质合同","签了电子合同","只有收据或转账记录","什么都没有","记不清"],onlyIf:"xieyi"},
+
+  {id:"A7",g:"协议班",t:"协议里写清楚退费条件和到账期限了吗？",ty:"radio",
+   opts:["写清楚了","写了但比较模糊","没写","没看过"],onlyIf:"xieyi"},
+
+  /* ---------- 五、认知（知识题，降低自尊威胁） ---------- */
+  {id:"C1",g:"认知",t:"下面这些说法，您以前听过的有？",ty:"radio",
+   opts:["培训机构广告不能承诺「包过」「保过」","预付式消费付款后有一定期限内可退的规定","没听过","说不太准"]},
+
+  {id:"C2",g:"认知",t:"签培训协议之前，您会逐条看退费条款吗？",ty:"scale"},
+
+  {id:"C3",g:"认知",t:"您觉得下面哪些最该管？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["禁止「包过」类宣传","预收款进监管账户","强制合同写明退费期限","超期未退加罚","机构黑名单和退费公示","限制收费上限","学校提供免费备考资源","其他"]},
+
+  /* ---------- 六、退费经历 ---------- */
+  {id:"R0",g:"退费",t:"关于退费这件事，退了和没退都很常见，两种情况对我们同样重要。以下问题只用于了解现状，不涉及对错。",ty:"info",onlyIf:"xieyi"},
+
+  {id:"R1",g:"退费",t:"您有没有申请过退费？",ty:"radio",
+   opts:["申请过","没申请过，我考上了","没申请过，我主动放弃","还没到能申请的时点"],skipTo:{1:"B1",2:"B1",3:"B1"},onlyIf:"xieyi"},
+
+  {id:"R2",g:"退费",t:"您第一次提出退费申请，是什么时候？",ty:"radio",
+   opts:["3 个月以内","3–6 个月前","6–12 个月前","1–2 年前","2 年以上","记不清"],onlyIf:"refund"},
+
+  {id:"R3",g:"退费",t:"协议约定的退费到账期限是多久？",ty:"radio",
+   opts:["30 个工作日内","31–45 个工作日","46–60 个工作日","60 个工作日以上","没约定","不清楚"],onlyIf:"refund"},
+
+  {id:"R4",g:"退费",t:"这笔退费目前的结果是？",ty:"radio",
+   opts:["全额到账","部分到账","一分没到，还在等","换成课程","换成实物","明确拒绝","已经放弃"],onlyIf:"refund"},
+
+  {id:"R5",g:"退费",t:"从申请到目前（或到账），等了多久？",ty:"radio",
+   opts:["1 个月以内","1–3 个月","3–6 个月","6–12 个月","1–2 年","2 年以上"],onlyIf:"refund"},
+
+  {id:"R6",g:"退费",t:"机构给出的理由或方案是？",h:"可多选",ty:"checkbox",
+   opts:["走流程、要排队","说资金困难","说我不符合条件","扣资料费 / 服务费 / 违约金","转成别的课程","分期退","用实物抵扣","让我拉新学员抵退费","没给理由，就是拖","其他"],onlyIf:"refund"},
+
+  {id:"R7",g:"退费",t:"您采取过哪些维权方式？",h:"可多选；没采取过请选最后一项",ty:"checkbox",
+   opts:["和机构协商","打 12315 或 12345","黑猫投诉等平台","找市场监管局或教育局","找媒体","起诉或仲裁","和其他学员一起维权","都没试过"],onlyIf:"refund"},
+
+  /* ---------- 七、基本信息 ---------- */
+  {id:"B1",g:"基本信息",t:"性别",ty:"radio",opts:["男","女","不愿透露"]},
+  {id:"B2",g:"基本信息",t:"年级",ty:"radio",opts:["大一","大二","大三","大四","研究生","已毕业"]},
+  {id:"B3",g:"基本信息",t:"专业大类",ty:"radio",opts:["理工","经管","文史哲法","教育","农林医","艺体","其他"]},
+  {id:"B4",g:"基本信息",t:"生源地",ty:"radio",opts:["省内城市","省内县镇","省外城市","省外县镇"]},
+  {id:"B5",g:"基本信息",t:"家庭月收入大致是？",ty:"radio",opts:["3000 元以下","3000–6000 元","6000–1 万","1–2 万","2 万以上","不愿透露","不清楚"]},
+  {id:"B6",g:"基本信息",t:"您所在学校属于？",h:"仅用于样本结构核对，不涉及具体校名",ty:"radio",
+   opts:["部属高校","省属重点","省属普通本科","民办本科","高职高专"]},
+
+  /* ---------- 八、质控 ---------- */
+  {id:"Q1",g:"质控",t:"这道题请选择「比较不同意」",ty:"radio",
+   opts:["非常同意","比较同意","一般","比较不同意","非常不同意"],trap:"比较不同意"},
+
+  {id:"Q2",g:"质控",t:"「只要报了协议班，就一定能考上」，您同意吗？",ty:"radio",
+   opts:["非常同意","比较同意","一般","比较不同意","非常不同意"],reverse:true},
+
+  {id:"O1",g:"质控",t:"如果只能对培训机构、学校或监管部门说一句话，您想说什么？",ty:"textarea",ph:"选填，50 字以内",optional:true,maxlen:50}
 ];
 
-const SCALE_LBL = ["非常不同意","不同意","一般","同意","非常同意"];
-const SCALE_TIP = ["","","","",""];
+/* 质控题插到中段：A7 之后（约第 17 题位置），而不是放最后 */
+const Q1_POS_AFTER = "A7";
+
+const SCALE_LBL = ["从不","偶尔","有时","经常","每次"];
 
 /* ============ 状态 ============ */
-const A = {};                 // 答案
-let startedAt = null;         // 打开问卷时间
+const A = {};
+let startedAt = null;
 let submitted = false;
 const clientId = getClientId();
 
@@ -170,40 +222,59 @@ function getClientId(){
   return v;
 }
 
-/* ============ 可见性判断 ============ */
-function bandType(){ return A.Q8 === "没报过" ? "noban" : "ban"; }
-function xieyiType(){ return A.Q9 === "有" ? "xieyi" : "noxieyi"; }
-
-function visible(q){
-  if(q.onlyIf === "xieyi" && xieyiType() !== "xieyi") return false;
-  if(q.onlyIf === "noban" && bandType() !== "noban") return false;
-  return true;
-}
-
-/* 计算当前可见的题目列表（考虑跳过逻辑） */
+/* ============ 分支判断 ============ */
 function isTerminated(){
   for(const q of Q){
-    if(!q.end || A[q.id] === undefined) continue;
-    const idx = q.opts.indexOf(A[q.id]);
-    if(idx >= 0 && q.end.includes(idx)) return true;
+    if(A[q.id] === undefined) continue;
+    if(q.end){
+      const idx = q.opts.indexOf(A[q.id]);
+      if(idx >= 0 && q.end.includes(idx)) return true;
+    }
+    if(q.endIfAny && Array.isArray(A[q.id])){
+      if(q.endIfAny.some(x => A[q.id].includes(x))) return true;
+    }
   }
   return false;
 }
 
-function visibleList(){
+/* 协议班当事人：报过 = xieyi */
+function isXieyi(){ return A.A2 === "报过"; }
+/* 申请过退费 = refund */
+function isRefund(){ return isXieyi() && A.R1 === "申请过"; }
+
+function visible(q){
+  if(q.onlyIf === "xieyi" && !isXieyi()) return false;
+  if(q.onlyIf === "refund" && !isRefund()) return false;
+  return true;
+}
+
+function orderedList(){
   if(isTerminated()) return [];
   const out = [];
   let skipTo = null;
   for(const q of Q){
+    // Q1 由插队逻辑负责放置，主循环跳过，避免重复
+    if(q.id === "Q1") continue;
     if(skipTo && q.id !== skipTo) continue;
     if(skipTo && q.id === skipTo) skipTo = null;
     if(!visible(q)) continue;
     out.push(q);
-    // 触发跳过：把当前题已选的选项映射到目标题
+    // 质控题插队
+    if(q.id === Q1_POS_AFTER){
+      const qc = Q.find(x => x.id === "Q1");
+      if(qc && !out.some(x => x.id === "Q1")) out.push(qc);
+    }
     if(q.skipTo && A[q.id] !== undefined){
       const idx = q.opts ? q.opts.indexOf(A[q.id]) : -1;
       if(q.skipTo[idx]) skipTo = q.skipTo[idx];
     }
+  }
+  // 保底：确保 Q1 一定在里面（若 A7 不可见）
+  if(!out.some(x => x.id === "Q1")){
+    const qc = Q.find(x => x.id === "Q1");
+    const oi = out.findIndex(x => x.id === "Q2");
+    if(qc && oi >= 0) out.splice(oi, 0, qc);
+    else if(qc) out.push(qc);
   }
   return out;
 }
@@ -212,16 +283,20 @@ function visibleList(){
 const formEl = document.getElementById("form");
 
 function render(){
-  const list = visibleList();
+  const list = orderedList();
   formEl.innerHTML = "";
   if(isTerminated()){
     formEl.innerHTML = '<div class="card"><div class="done"><div class="ic">🙏</div>'
       + '<h1 style="font-size:18px">感谢参与</h1>'
-      + '<p class="lead">本问卷面向正在备考的在校学生，你的情况不在本次调研范围内。<br>仍然感谢你点开这份问卷。</p></div></div>';
+      + '<p class="lead">本问卷面向江西省内正在备考或近期备考过的在校学生。<br>你的情况不在本次调研范围内，仍然感谢你点开这份问卷。</p></div></div>';
     document.getElementById("bar").classList.add("hide");
     return;
   }
+  let lastGroup = null;
   for(const q of list){
+    if(q.g && q.g !== lastGroup && q.ty !== "info"){
+      lastGroup = q.g;
+    }
     formEl.appendChild(buildQ(q));
   }
   updateProgress(list);
@@ -232,10 +307,17 @@ function buildQ(q){
   d.className = "card";
   d.dataset.qid = q.id;
 
+  if(q.ty === "info"){
+    const n = document.createElement("div");
+    n.className = "note";
+    n.textContent = q.t;
+    d.appendChild(n);
+    return d;
+  }
+
   const t = document.createElement("p");
   t.className = "qt";
-  t.textContent = q.id.startsWith("Q") || q.id.startsWith("S") || q.id.startsWith("D") || q.id.startsWith("A") || q.id.startsWith("O")
-    ? q.id + ". " + q.t : q.t;
+  t.textContent = q.id + ". " + q.t;
   d.appendChild(t);
 
   if(q.h){
@@ -245,7 +327,7 @@ function buildQ(q){
   }
 
   if(q.ty === "radio" || q.ty === "checkbox"){
-    q.opts.forEach((o,i)=>{
+    q.opts.forEach((o)=>{
       const lab = document.createElement("label");
       lab.className = "opt";
       const inp = document.createElement("input");
@@ -254,28 +336,50 @@ function buildQ(q){
       const span = document.createElement("span");
       span.textContent = o;
       lab.appendChild(inp); lab.appendChild(span);
-      if(q.ty === "radio" ? A[q.id] === o : (A[q.id]||[]).includes(o)){ lab.classList.add("on"); inp.checked = true; }
+
+      const on = q.ty === "radio" ? A[q.id] === o : (A[q.id]||[]).includes(o);
+      if(on){ lab.classList.add("on"); inp.checked = true; }
+
       lab.addEventListener("click", e=>{
-        // label 内的 input 会自己触发一次 click，拦住它，避免重复计数
         if(e.target !== inp) e.preventDefault();
         if(q.ty === "radio"){
           A[q.id] = o;
           d.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));
           lab.classList.add("on");
           inp.checked = true;
+          // 单选触发跳转时重渲染
+          if(q.skipTo || q.end || q.onlyIf){ setTimeout(render, 140); }
+          else updateProgress();
         } else {
           const cur = A[q.id] || [];
           const k = cur.indexOf(o);
-          if(k>=0) cur.splice(k,1); else cur.push(o);
+          if(k >= 0){ cur.splice(k,1); }
+          else {
+            if(q.max && cur.length >= q.max){
+              // 达到上限，替换最早的一项
+              cur.shift();
+              d.querySelectorAll(".opt").forEach(x=>{
+                const iv = x.querySelector("input");
+                if(iv && !cur.includes(iv.value)) x.classList.remove("on");
+              });
+            }
+            cur.push(o);
+          }
           A[q.id] = cur;
           lab.classList.toggle("on", cur.includes(o));
           inp.checked = cur.includes(o);
+          updateProgress();
         }
-        if(q.ty === "radio" && q.skipTo){ setTimeout(render, 120); }
-        else updateProgress();
       });
       d.appendChild(lab);
     });
+
+    if(q.max){
+      const tip = document.createElement("p");
+      tip.className = "qh"; tip.style.marginTop = "6px";
+      tip.textContent = "最多选 " + q.max + " 项";
+      d.appendChild(tip);
+    }
   }
 
   else if(q.ty === "scale"){
@@ -284,16 +388,11 @@ function buildQ(q){
     SCALE_LBL.forEach((lbl,i)=>{
       const lab = document.createElement("label");
       lab.className = "opt";
-      const inp = document.createElement("input");
-      inp.type = "radio"; inp.name = q.id; inp.value = i+1;
-      inp.style.display = "none";
       const span = document.createElement("span");
       span.textContent = (i+1);
       const sub = document.createElement("span");
       sub.textContent = lbl;
-      sub.style.fontSize = "10.5px";
-      span.appendChild(sub);
-      lab.appendChild(inp); lab.appendChild(span);
+      lab.appendChild(span); lab.appendChild(sub);
       if(String(A[q.id]) === String(i+1)) lab.classList.add("on");
       lab.addEventListener("click", ()=>{
         A[q.id] = i+1;
@@ -307,54 +406,8 @@ function buildQ(q){
     const hint = document.createElement("div");
     hint.className = "qh";
     hint.style.marginTop = "6px";
-    hint.textContent = "1 = 非常不同意　5 = 非常同意";
+    hint.textContent = "1 = 从不逐条看　5 = 每条都看";
     d.appendChild(hint);
-  }
-
-  else if(q.ty === "num"){
-    const inp = document.createElement("input");
-    inp.type = "number"; inp.inputMode = "numeric"; inp.min = "0";
-    inp.className = "numbox"; inp.placeholder = "0";
-    if(A[q.id] !== undefined) inp.value = A[q.id];
-    inp.addEventListener("input", ()=>{
-      A[q.id] = inp.value === "" ? undefined : Number(inp.value);
-      updateProgress();
-    });
-    d.appendChild(inp);
-    if(q.unit){
-      const u = document.createElement("div");
-      u.className = "unit"; u.textContent = q.unit;
-      d.appendChild(u);
-    }
-  }
-
-  else if(q.ty === "matrix"){
-    const g = document.createElement("div"); g.className = "matrix";
-    q.rows.forEach(r=>{
-      const row = document.createElement("div"); row.className = "mrow";
-      const lb = document.createElement("label"); lb.textContent = r;
-      const inp = document.createElement("input");
-      inp.type = "number"; inp.inputMode = "numeric"; inp.min="0"; inp.placeholder = "0";
-      const store = A[q.id] || {};
-      if(store[r] !== undefined) inp.value = store[r];
-      inp.addEventListener("input", ()=>{
-        const s = A[q.id] || {};
-        s[r] = inp.value === "" ? undefined : Number(inp.value);
-        A[q.id] = s;
-        updateProgress();
-      });
-      row.appendChild(lb); row.appendChild(inp);
-      g.appendChild(row);
-    });
-    d.appendChild(g);
-  }
-
-  else if(q.ty === "text"){
-    const inp = document.createElement("input");
-    inp.type = "text"; inp.className = "numbox"; inp.placeholder = q.ph || "";
-    if(A[q.id] !== undefined) inp.value = A[q.id];
-    inp.addEventListener("input", ()=>{ A[q.id] = inp.value; updateProgress(); });
-    d.appendChild(inp);
   }
 
   else if(q.ty === "textarea"){
@@ -369,25 +422,30 @@ function buildQ(q){
   return d;
 }
 
-/* ============ 进度与校验 ============ */
+/* ============ 进度 ============ */
 const btn = document.getElementById("btn");
 const pbar = document.getElementById("pbar");
 const pctEl = document.getElementById("pct");
 
+/* 固定分母，防止分支收起时进度条倒退 */
+let maxSeen = 0;
+
 function answered(q){
   const v = A[q.id];
   if(q.optional) return true;
+  if(q.ty === "info") return true;
   if(v === undefined || v === null || v === "") return false;
   if(Array.isArray(v) && v.length === 0) return false;
-  if(q.ty === "matrix" && (!v || Object.keys(v).length === 0)) return false;
   return true;
 }
 
 function updateProgress(list){
-  const L = list || visibleList();
+  const L = list || orderedList();
   const total = L.length;
   const done = L.filter(answered).length;
-  const p = total ? Math.round(done/total*100) : 0;
+  if(total > maxSeen) maxSeen = total;
+  const denom = Math.max(total, maxSeen);
+  const p = denom ? Math.min(100, Math.round(done/denom*100)) : 0;
   pbar.style.width = p + "%";
   pctEl.textContent = p + "%";
 }
@@ -395,19 +453,21 @@ function updateProgress(list){
 /* ============ 提交 ============ */
 function validate(){
   if(isTerminated()) return {ok:false, term:true};
-  const list = visibleList();
+  const list = orderedList();
   for(const q of list){
     if(!answered(q)) return {ok:false, q};
   }
-  // 测谎题
-  if(A.A1 !== "比较不同意") return {ok:false, trap:true};
+  if(A.Q1 !== "比较不同意") return {ok:false, trap:true};
   return {ok:true};
 }
 
 function quotaCell(){
-  const map = {"考研":"KAOYAN","国考":"GUOKAO","省考":"SHENGKAO","事业单位或选调":"SHIYE","其他（请注明）":"OTHER"};
-  const g = {"大一或大二":"12","大三":"3","大四":"4","研究生":"G"}[A.D2] || "X";
-  return (map[A.S4]||"NA") + "-" + g;
+  const map = {"考研":"KAOYAN","国考或省考":"GUOKAO","事业单位或选调":"SHIYE","教师招聘":"JIAOSHI","职业资格":"ZIGE","已考完，暂时不打算再考":"FINISH"};
+  return (map[A.S3] || "NA") + "-" + (A.B2 || "X");
+}
+
+function pathLen(){
+  return orderedList().length;
 }
 
 async function submit(){
@@ -417,7 +477,8 @@ async function submit(){
     errEl.style.display = "block";
     if(v.trap){ errEl.textContent = "注意力检测题作答有误，请重新检查后提交。"; }
     else { errEl.textContent = "还有题目未完成：「" + (v.q.t) + "」";
-           document.querySelector('[data-qid="'+v.q.id+'"]').scrollIntoView({behavior:"smooth",block:"center"}); }
+           const el = document.querySelector('[data-qid="'+v.q.id+'"]');
+           if(el) el.scrollIntoView({behavior:"smooth",block:"center"}); }
     return;
   }
   errEl.style.display = "none";
@@ -425,6 +486,12 @@ async function submit(){
 
   const now = new Date();
   const dur = Math.max(1, Math.round((now - startedAt)/1000));
+  const nQ = pathLen();
+  const secPerQ = nQ ? +(dur / nQ).toFixed(2) : null;
+
+  /* 只提交当前可见题目的答案，剔除分支切换留下的孤儿答案 */
+  const clean = {};
+  for(const q of orderedList()) if(A[q.id] !== undefined) clean[q.id] = A[q.id];
 
   const payload = {
     client_id: clientId,
@@ -435,16 +502,16 @@ async function submit(){
     screen_size: screen.width + "x" + screen.height,
     referrer: document.referrer || "direct",
     quota_cell: quotaCell(),
-    answers: A,
-    q_s1: A.S1, q_s2: A.S2, q_s3: A.S3, q_s4: A.S4, q_s5: A.S5,
-    q6_total: A.Q6 ?? null,
-    q8_class: A.Q8 ?? null,
-    q9_xieyi: A.Q9 ?? null,
-    q10_amount: A.Q10 ?? null,
-    q16_refund: A.Q16 ?? null,
-    d1_gender: A.D1, d2_grade: A.D2, d3_major: A.D3, d4_origin: A.D4,
-    a1_trap_ok: A.A1 === "比较不同意",
-    a2_sincere: A.A2 ?? null,
+    answers: clean,
+    q_s1: A.S1, q_s2: Array.isArray(A.S2)?A.S2.join("|"):A.S2, q_s3: A.S3, q_s4: A.S4, q_s5: null,
+    q6_total: null,   /* 本版支出为区间题，具体档位见 answers.P1 */
+    q8_class: Array.isArray(A.P3)?A.P3.join("|"):null,
+    q9_xieyi: A.A2,
+    q10_amount: null,  /* 本版为区间题，档位见 answers.A3 */
+    q16_refund: A.R4,
+    d1_gender: A.B1, d2_grade: A.B2, d3_major: A.B3, d4_origin: A.B4,
+    a1_trap_ok: A.Q1 === "比较不同意",
+    a2_sincere: A.Q2 ?? null,
     is_valid: true
   };
 
@@ -472,7 +539,7 @@ async function submit(){
   }catch(e){
     btn.disabled = false; btn.textContent = "提交";
     errEl.style.display = "block";
-    errEl.textContent = "提交失败，请检查网络后重试。如反复失败请截图联系调研员。（" + e.message + "）";
+    errEl.textContent = "提交失败，请检查网络后重试。如反复失败请联系调研员。（" + e.message + "）";
   }
 }
 
@@ -489,8 +556,6 @@ btn.addEventListener("click", ()=>{
   }
   submit();
 });
-
-document.addEventListener("click", ()=>{ if(startedAt) updateProgress(); });
 </script>
 </body>
 </html>
