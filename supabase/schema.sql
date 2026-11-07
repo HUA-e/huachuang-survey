@@ -35,6 +35,7 @@ create table if not exists public.responses (
   d4_origin       text,
   a1_trap_ok      boolean,        -- 测谎题是否答对
   a2_sincere      text,
+  analysis_stage  text,           -- core=实质备考 / prospect=前瞻人群（分析分层用）
 
   -- ===== 清洗结果 =====
   is_valid        boolean     not null default true,

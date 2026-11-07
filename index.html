@@ -105,6 +105,9 @@ const Q = [
    opts:["考研","国考","江西省考","事业单位或选调","教师招聘","其他职业资格","以上都没有"],
    endIfAny:["以上都没有"]},
 
+  {id:"S2b",g:"甄别",t:"您最近一次参加的这类考试，距今多久？",h:"用于区分已进入实质备考阶段与尚在观望阶段的人群",ty:"radio",
+   opts:["3 个月以内","3–6 个月","6–12 个月","12–24 个月","还没考，正在准备"]},
+
   {id:"S3",g:"甄别",t:"您最近一次系统备考的是？",ty:"radio",
    opts:["考研","国考或省考","事业单位或选调","教师招聘","职业资格","已考完，暂时不打算再考"]},
 
@@ -235,6 +238,18 @@ function isTerminated(){
     }
   }
   return false;
+}
+
+/* 备考阶段分层：
+   core      = 已进入实质备考（考过，或大三及以上正在准备）
+   prospect  = 前瞻人群（大一大二且尚未考过）
+   分析时 expenditure 只用 core，prospect 单独用于认知对比 */
+function stageOf(){
+  const grade = A.B2;
+  const low = grade === "大一" || grade === "大二";
+  const notYet = A.S2b === "还没考，正在准备";
+  if(low && notYet) return "prospect";
+  return "core";
 }
 
 /* 协议班当事人：报过 = xieyi */
@@ -503,7 +518,7 @@ async function submit(){
     referrer: document.referrer || "direct",
     quota_cell: quotaCell(),
     answers: clean,
-    q_s1: A.S1, q_s2: Array.isArray(A.S2)?A.S2.join("|"):A.S2, q_s3: A.S3, q_s4: A.S4, q_s5: null,
+    q_s1: A.S1, q_s2: Array.isArray(A.S2)?A.S2.join("|"):A.S2, q_s3: A.S3, q_s4: A.S4, q_s5: A.S2b,
     q6_total: null,   /* 本版支出为区间题，具体档位见 answers.P1 */
     q8_class: Array.isArray(A.P3)?A.P3.join("|"):null,
     q9_xieyi: A.A2,
@@ -512,6 +527,7 @@ async function submit(){
     d1_gender: A.B1, d2_grade: A.B2, d3_major: A.B3, d4_origin: A.B4,
     a1_trap_ok: A.Q1 === "比较不同意",
     a2_sincere: A.Q2 ?? null,
+    analysis_stage: stageOf(),
     is_valid: true
   };
 
