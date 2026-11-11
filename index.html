@@ -412,9 +412,9 @@ function buildQ(q){
           d.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));
           lab.classList.add("on");
           inp.checked = true;
-          // 单选触发跳转时重渲染
-          if(q.skipTo || q.end || q.onlyIf){ purgeHidden(); setTimeout(render, 140); }
-          else updateProgress();
+          // 单选可能改变后续题目的可见性（skipTo 跳转，或被 onlyIf 依赖的前置题），
+          // 一律重渲染，避免 S4 改动后 P 组/V4 不刷新
+          purgeHidden(); setTimeout(render, 140);
         } else {
           let cur = A[q.id] || [];
           const k = cur.indexOf(o);

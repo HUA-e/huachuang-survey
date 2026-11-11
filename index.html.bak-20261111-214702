@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>大学生备考投入与培训消费调查</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#fff; --ink:#1a1d23; --sub:#6b7280;
+    --line:#e3e6ea; --brand:#2563eb; --brand-weak:#eff4ff; --warn:#dc2626;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+  .wrap{max-width:640px;margin:0 auto;padding:16px 14px 120px}
+  .card{background:var(--card);border-radius:14px;padding:20px 18px;margin-bottom:14px;
+    box-shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04)}
+  h1{font-size:20px;margin:0 0 14px;line-height:1.4}
+  .lead{color:var(--sub);font-size:14px;line-height:1.75;margin:0 0 12px}
+  .lead b{color:var(--ink)}
+  .q{padding:18px 0;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:none;padding-bottom:4px}
+  .qt{font-size:15.5px;font-weight:600;margin:0 0 4px;line-height:1.55}
+  .qh{font-size:12.5px;color:var(--sub);margin:0 0 10px;font-weight:400}
+  .note{background:#f0f7ff;border-left:3px solid var(--brand);border-radius:6px;
+    padding:10px 12px;font-size:13.5px;color:#33506e;margin:0 0 14px;line-height:1.65}
+  .opt{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border:1px solid var(--line);
+    border-radius:9px;margin-bottom:7px;cursor:pointer;transition:.12s;font-size:15px}
+  .opt:active{background:#f0f2f5}
+  .opt.on{border-color:var(--brand);background:var(--brand-weak)}
+  .opt input{margin:3px 0 0;flex:none;accent-color:var(--brand);width:16px;height:16px}
+  .scale{display:flex;gap:6px;margin-top:8px}
+  .scale .opt{flex:1;justify-content:center;text-align:center;padding:11px 2px;margin:0;font-size:14px}
+  .scale .opt span{display:block;font-size:10.5px;color:var(--sub);margin-top:2px}
+  .numbox{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:16px;font-family:inherit;background:#fbfcfd}
+  .numbox:focus{outline:none;border-color:var(--brand);background:#fff}
+  .unit{font-size:13px;color:var(--sub);margin-top:5px}
+  textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:15px;font-family:inherit;resize:vertical;min-height:70px;background:#fbfcfd}
+  textarea:focus{outline:none;border-color:var(--brand);background:#fff}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);
+    backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+  .barin{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .prog{flex:1;height:6px;background:#e8ebef;border-radius:3px;overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:var(--brand);border-radius:3px;transition:width .3s}
+  .pct{font-size:12.5px;color:var(--sub);min-width:34px;text-align:right}
+  button{background:var(--brand);color:#fff;border:none;border-radius:10px;
+    padding:12px 26px;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer}
+  button:disabled{opacity:.45}
+  .err{background:#fef2f2;color:var(--warn);border:1px solid #fecaca;border-radius:9px;
+    padding:11px 13px;font-size:14px;margin-bottom:14px;display:none}
+  .done{text-align:center;padding:60px 20px}
+  .done .ic{font-size:52px;margin-bottom:14px}
+  .hide{display:none!important}
+  .tip{font-size:12.5px;color:var(--sub);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="intro" class="card">
+    <h1>大学生备考投入与培训消费调查</h1>
+    <p class="lead">同学你好，我们正在做一项关于大学生备考支出与培训消费的调查，用于江西省"华创杯"市场调查分析大赛。</p>
+    <p class="lead">约 <b>20–40 题</b>（按作答情况跳过不适用题目），需要 <b>6–10 分钟</b>。全程<b>匿名</b>，不收集姓名、手机号和学校全称，数据仅用于学术研究。</p>
+    <p class="lead">大部分题目是选择题，没有对错之分，按真实情况填就好。金额题如没有相关支出，选"0"即可。</p>
+    <p class="tip">作答过程中如中途退出，需要重新填写。</p>
+  </div>
+
+  <div id="form"></div>
+  <div id="err" class="err"></div>
+
+  <div id="done" class="card hide">
+    <div class="done">
+      <div class="ic">✅</div>
+      <h1 style="font-size:19px">提交成功，感谢你的帮助！</h1>
+      <p class="lead">你的每一份回答，都会成为这份调研报告的一部分。<br>祝备考顺利，早日上岸。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="bar" id="bar">
+  <div class="barin">
+    <div class="prog"><i id="pbar"></i></div>
+    <div class="pct" id="pct">0%</div>
+    <button id="btn">开始</button>
+  </div>
+</div>
+
+<script>
+/* ============ 配置 ============ */
+const SUPABASE_URL = "https://ttbjjlhhkrdlrbxzxazb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_C_zh7d3v0pMsJA7cJTdfVg_PCheDzkj";
+
+/* ============ 题库 ============ */
+/* onlyIf: 条件显示；end: 选这些索引则结束问卷 */
+const Q = [
+  /* ---------- 一、甄别 ---------- */
+  {id:"S1",g:"甄别",t:"您目前的身份是？",ty:"radio",
+   opts:["全日制在校本科生或研究生","非全日制在读","已毕业工作","以上都不是"],end:[1,2,3]},
+
+  {id:"S2",g:"甄别",t:"过去 24 个月，您是否系统备考过下列考试？",h:"系统备考指有固定学习计划并持续投入时间；可多选",ty:"checkbox",
+   opts:["考研","国考","省考或选调","事业单位","教师招聘","其他职业资格","以上都没有"],
+   endIfAny:["以上都没有"]},
+
+  {id:"S2b",g:"甄别",t:"您最近一次参加的这类考试，距今多久？",h:"用于区分已进入实质备考阶段与尚在观望阶段的人群",ty:"radio",
+   opts:["3 个月以内","3–6 个月","6–12 个月","12–24 个月","还没考，正在准备"]},
+
+  {id:"S3",g:"甄别",t:"您最近一次系统备考的是？",ty:"radio",
+   opts:["考研","国考或省考","事业单位或选调","教师招聘","职业资格","已考完，暂时不打算再考"]},
+
+  {id:"S4",g:"甄别",t:"过去 24 个月，您是否买过付费备考服务？",h:"付费备考服务包括网课、面授班、一对一辅导、付费题库、自习室会员等",ty:"radio",
+   opts:["是","否"],skipTo:{1:"A1"}},
+
+  /* V1 学习基础（甄别组末，全员） */
+  {id:"V1",g:"甄别",t:"如果参加同类考试培训，您目前的学习基础更接近哪种情况？",
+   h:"用于判断课程难度与学习支持需求，无好坏之分",ty:"radio",
+   opts:["基础较弱，需要系统梳理","基础一般，能跟上常规进度","基础较好，主要需要专项突破","还不清楚，希望先测评"]},
+
+  /* ---------- 二、备考投入 ---------- */
+  {id:"P1",g:"投入",t:"过去 12 个月，您备考的总支出大约是多少？",h:"包括培训、资料、自习室、租房、报名费、交通差旅等；完全没有支出请选第一项",ty:"radio",
+   opts:["0 元","1–500 元","501–1500 元","1501–3000 元","3001–6000 元","6001–1 万","1–2 万","2–3 万","3 万以上"]},
+
+  {id:"P2",g:"投入",t:"其中，培训类支出大约是多少？",h:"报班、网课、一对一辅导等",ty:"radio",
+   opts:["0 元","1–500 元","501–1500 元","1501–3000 元","3001–6000 元","6001–1 万","1–2 万","2–3 万","3 万以上"]},
+
+  {id:"P3",g:"投入",t:"您报过的班属于哪些类型？",h:"可多选；没报过班请选最后一项",ty:"checkbox",
+   opts:["基础班 / 系统班","冲刺班 / 押题班","协议班","一对一辅导","只买过资料，没报班"],excl:"只买过资料，没报班"},
+
+  /* ---------- 三、了解渠道与报班决策 ---------- */
+  {id:"V2",g:"决策",t:"您通常最早通过哪些渠道了解到备考培训机构？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["短视频/直播平台","微信公众号或小红书","搜索引擎","QQ/微信备考群","学长学姐或同学推荐","学校讲座/就业指导","线下门店或校园宣传","其他"]},
+
+  {id:"V3",g:"决策",t:"哪些材料最能让您相信一家机构值得报名？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["可核验的学员成绩/录取案例","明确分母与年份的通过率","免费试听或完整课节","清楚展示师资与实际授课老师","公开退费条件与办理时限","第三方平台评价与投诉处理记录","熟人真实体验","低价体验课"]},
+
+  /* ---------- 四、服务需求 ---------- */
+  {id:"V4",g:"产品",t:"如果下列服务单独收费，您最愿意为哪些付费？",h:"最多选 3 项",ty:"checkbox",max:3,
+   onlyIf:"vpaid",
+   opts:["系统化课程","一对一答疑","督学打卡与进度提醒","申论/主观题批改","阶段模考与诊断","选岗/择校指导","面试模拟与陪练","考后重修或延长服务","以上都不愿意单独付费"]},
+
+  /* 协议班了解程度 —— 前置，决定是否进入 D 组与协议班细节 */
+  {id:"A1",g:"协议班",t:"您对「协议班」了解多少？",h:"协议班指与机构签协议、约定考试不过就退费的班型",ty:"radio",
+   opts:["很了解","听说过","完全没听说过"],skipTo:{2:"C1"}},
+
+  /* V5 保障方式（协议班组，全员） */
+  {id:"V5",g:"协议班",t:"如果课程内容和服务相近，您更能接受哪种未通过后的保障方式？",
+   h:"请选择最符合真实意愿的一项",ty:"radio",
+   opts:["全额退费，但价格更高","部分退费，价格适中","免费重修一次","延长课程与答疑服务","不需要退费保障，选择更低价的普通班","需要进一步了解条款后决定"]},
+
+  /* ---------- 五、选择原因（轻题前置） ---------- */
+  {id:"D1",g:"原因",t:"选择（或会考虑）协议班，最主要的原因是？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["不过能退费，风险低","宣传通过率高或有内部资源","身边同学都报","父母要求","被销售说服","有人监督着学","其他"]},
+
+  {id:"D2",g:"原因",t:"机构的宣传里，哪句话最能打动您？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["不过全额退","包过 / 保过 / 保上岸","通过率 XX%","命题组老师、内部渠道","限额招生","上岸学员现身说法","都不记得了"],excl:"都不记得了"},
+
+  {id:"D3",g:"原因",t:"报名之前，您查过这家机构的退费口碑吗？",ty:"radio",
+   opts:["认真查过","随便看了一眼","没查过"]},
+
+  /* ---------- 四、协议班参与 ---------- */
+  {id:"A2",g:"协议班",t:"您本人报名过协议班吗？",ty:"radio",
+   opts:["报过","没报过","记不清"],skipTo:{1:"C1",2:"C1"}},
+
+  {id:"A3",g:"协议班",t:"最近一次协议班，实际付了多少钱？",h:"如有多次，填最近一次",ty:"radio",
+   opts:["3000 元以下","3001–8000 元","8001–15000 元","15001–25000 元","25001–40000 元","4 万以上","不方便说"],onlyIf:"xieyi"},
+
+  {id:"A4",g:"协议班",t:"这份协议约定的是哪种退费方式？",ty:"radio",
+   opts:["全额退","退一部分（约 50–80%）","免费重读，不退钱","笔试不过退，面试不过不退","不清楚"],onlyIf:"xieyi"},
+
+  {id:"A5",g:"协议班",t:"付款方式是？",h:"可多选",ty:"checkbox",
+   opts:["一次付清","机构内部分期","分期平台或信用卡","家人代付","其他"],onlyIf:"xieyi"},
+
+  {id:"A6",g:"协议班",t:"报名时，您签了书面协议吗？",ty:"radio",
+   opts:["签了纸质合同","签了电子合同","只有收据或转账记录","什么都没有","记不清"],onlyIf:"xieyi"},
+
+  {id:"A7",g:"协议班",t:"协议里写清楚退费条件和到账期限了吗？",ty:"radio",
+   opts:["写清楚了","写了但比较模糊","没写","没看过"],onlyIf:"xieyi"},
+
+  /* ---------- 五、认知（知识题，降低自尊威胁） ---------- */
+  {id:"C1",g:"认知",t:"下面这些说法，您以前听过的有？",ty:"radio",
+   opts:["培训机构广告不能承诺「包过」「保过」","预付式消费付款后有一定期限内可退的规定","没听过","说不太准"]},
+
+  {id:"C2",g:"认知",t:"签培训协议之前，您会逐条看退费条款吗？",ty:"scale"},
+
+  {id:"C3",g:"认知",t:"您觉得下面哪些最该管？",h:"最多选 3 项",ty:"checkbox",max:3,
+   opts:["禁止「包过」类宣传","预收款进监管账户","强制合同写明退费期限","超期未退加罚","机构黑名单和退费公示","限制收费上限","学校提供免费备考资源","其他"]},
+
+  /* ---------- 六、退费经历 ---------- */
+  {id:"R0",g:"退费",t:"关于退费这件事，退了和没退都很常见，两种情况对我们同样重要。以下问题只用于了解现状，不涉及对错。",ty:"info",onlyIf:"xieyi"},
+
+  {id:"R1",g:"退费",t:"您有没有申请过退费？",ty:"radio",
+   opts:["申请过","没申请过，我考上了","没申请过，我主动放弃","还没到能申请的时点"],skipTo:{1:"B1",2:"B1",3:"B1"},onlyIf:"xieyi"},
+
+  {id:"R2",g:"退费",t:"您第一次提出退费申请，是什么时候？",ty:"radio",
+   opts:["3 个月以内","3–6 个月前","6–12 个月前","1–2 年前","2 年以上","记不清"],onlyIf:"refund"},
+
+  {id:"R3",g:"退费",t:"协议约定的退费到账期限是多久？",ty:"radio",
+   opts:["30 个工作日内","31–45 个工作日","46–60 个工作日","60 个工作日以上","没约定","不清楚"],onlyIf:"refund"},
+
+  {id:"R4",g:"退费",t:"这笔退费目前的结果是？",ty:"radio",
+   opts:["全额到账","部分到账","一分没到，还在等","换成课程","换成实物","明确拒绝","已经放弃"],onlyIf:"refund"},
+
+  {id:"R5",g:"退费",t:"从申请到目前（或到账），等了多久？",ty:"radio",
+   opts:["1 个月以内","1–3 个月","3–6 个月","6–12 个月","1–2 年","2 年以上"],onlyIf:"refund"},
+
+  {id:"R6",g:"退费",t:"机构给出的理由或方案是？",h:"可多选",ty:"checkbox",
+   opts:["走流程、要排队","说资金困难","说我不符合条件","扣资料费 / 服务费 / 违约金","转成别的课程","分期退","用实物抵扣","让我拉新学员抵退费","没给理由，就是拖","其他"],onlyIf:"refund"},
+
+  {id:"R7",g:"退费",t:"您采取过哪些维权方式？",h:"可多选；没采取过请选最后一项",ty:"checkbox",
+   opts:["和机构协商","打 12315 或 12345","黑猫投诉等平台","找市场监管局或教育局","找媒体","起诉或仲裁","和其他学员一起维权","都没试过"],onlyIf:"refund",excl:"都没试过"},
+
+  /* ---------- 七、基本信息 ---------- */
+  {id:"B1",g:"基本信息",t:"性别",ty:"radio",opts:["男","女","不愿透露"]},
+  /* S1 已限定"全日制在校"，"已毕业"永远不可达，故删除 */
+  {id:"B2",g:"基本信息",t:"年级",ty:"radio",opts:["大一","大二","大三","大四","研究生"]},
+  {id:"B3",g:"基本信息",t:"专业大类",ty:"radio",opts:["理工","经管","文史哲法","教育","农林医","艺体","其他"]},
+  {id:"B4",g:"基本信息",t:"生源地",ty:"radio",opts:["省内城市","省内县镇","省外城市","省外县镇"]},
+  {id:"B5",g:"基本信息",t:"家庭月收入大致是？",ty:"radio",opts:["3000 元以下","3000–6000 元","6000–1 万","1–2 万","2 万以上","不愿透露","不清楚"]},
+  {id:"B6",g:"基本信息",t:"您所在学校属于？",h:"仅用于样本结构核对，不涉及具体校名",ty:"radio",
+   opts:["部属高校","省属重点","省属普通本科","民办本科","高职高专"]},
+
+  /* ---------- 八、质控 ---------- */
+  {id:"Q1",g:"质控",t:"这道题请选择「比较不同意」",ty:"radio",
+   opts:["非常同意","比较同意","一般","比较不同意","非常不同意"],trap:"比较不同意"},
+
+  /* Q1 是注意力检测（必须选"比较不同意"，答错 validate 拦下）。
+     Q2 是态度题「只要报了协议班就一定能考上」——方向与"越认同越理性"相反，
+     原名 Q2R 的 R 表示 reverse；存库仍是 Q2 键，分析时按 6-x 处理。 */
+  {id:"Q2",g:"质控",t:"「只要报了协议班，就一定能考上」，您同意吗？",ty:"radio",
+   opts:["非常同意","比较同意","一般","比较不同意","非常不同意"],reverse:true,
+   note:"反向题：计分时需倒序"},
+
+  {id:"O1",g:"质控",t:"如果只能对培训机构、学校或监管部门说一句话，您想说什么？",ty:"textarea",ph:"选填，50 字以内",optional:true,maxlen:50}
+];
+
+/* 质控题插到中段：A7 之后（约第 17 题位置），而不是放最后 */
+const Q1_POS_AFTER = "A7";
+
+const SCALE_LBL = ["从不","偶尔","有时","经常","每次"];
+
+/* ============ 状态 ============ */
+const A = {};
+let startedAt = null;
+let submitted = false;
+const clientId = getClientId();
+
+function getClientId(){
+  let v = localStorage.getItem("survey_cid");
+  if(!v){ v = "c" + Date.now().toString(36) + Math.random().toString(36).slice(2,10); localStorage.setItem("survey_cid", v); }
+  return v;
+}
+
+/* ============ 分支判断 ============ */
+function isTerminated(){
+  for(const q of Q){
+    if(A[q.id] === undefined) continue;
+    if(q.end){
+      const idx = q.opts.indexOf(A[q.id]);
+      if(idx >= 0 && q.end.includes(idx)) return true;
+    }
+    if(q.endIfAny && Array.isArray(A[q.id])){
+      if(q.endIfAny.some(x => A[q.id].includes(x))) return true;
+    }
+  }
+  return false;
+}
+
+/* 备考阶段分层：
+   core      = 已进入实质备考（考过，或大三及以上正在准备）
+   prospect  = 前瞻人群（大一大二且尚未考过）
+   分析时 expenditure 只用 core，prospect 单独用于认知对比 */
+function stageOf(){
+  const grade = A.B2;
+  const low = grade === "大一" || grade === "大二";
+  const notYet = A.S2b === "还没考，正在准备";
+  if(low && notYet) return "prospect";
+  return "core";
+}
+
+/* 买过付费备考服务 = vpaid（V4 只对这部分人显示） */
+function isPaid(){ return A.S4 === "是"; }
+/* 协议班当事人：报过 = xieyi */
+function isXieyi(){ return A.A2 === "报过"; }
+/* 申请过退费 = refund */
+function isRefund(){ return isXieyi() && A.R1 === "申请过"; }
+
+function visible(q){
+  if(q.onlyIf === "vpaid"  && !isPaid())   return false;
+  if(q.onlyIf === "xieyi"  && !isXieyi())  return false;
+  if(q.onlyIf === "refund" && !isRefund()) return false;
+  return true;
+}
+
+/* 改答前面的题会有分支答案变成"孤儿"（例如先答了 A3，再把 A2 改成没报过）。
+   真实系统里这些答案不会被提交（submit 的 clean 会过滤），但留在 A 里会让
+   渲染时残留勾选状态、也让后端的"跳转泄漏"检查失效。这里主动清掉。 */
+function purgeHidden(){
+  const keep = new Set(orderedList().map(x => x.id));
+  for(const k of Object.keys(A)){
+    if(!keep.has(k)) delete A[k];
+  }
+}
+
+function orderedList(){
+  if(isTerminated()) return [];
+  const out = [];
+  let skipTo = null;
+  for(const q of Q){
+    // Q1 由插队逻辑负责放置，主循环跳过，避免重复
+    if(q.id === "Q1") continue;
+    if(skipTo && q.id !== skipTo) continue;
+    if(skipTo && q.id === skipTo) skipTo = null;
+    if(!visible(q)) continue;
+    out.push(q);
+    // 质控题插队
+    if(q.id === Q1_POS_AFTER){
+      const qc = Q.find(x => x.id === "Q1");
+      if(qc && !out.some(x => x.id === "Q1")) out.push(qc);
+    }
+    if(q.skipTo && A[q.id] !== undefined){
+      const idx = q.opts ? q.opts.indexOf(A[q.id]) : -1;
+      if(q.skipTo[idx]) skipTo = q.skipTo[idx];
+    }
+  }
+  // 保底：确保 Q1 一定在里面（若 A7 不可见）
+  if(!out.some(x => x.id === "Q1")){
+    const qc = Q.find(x => x.id === "Q1");
+    const oi = out.findIndex(x => x.id === "Q2");
+    if(qc && oi >= 0) out.splice(oi, 0, qc);
+    else if(qc) out.push(qc);
+  }
+  return out;
+}
+
+/* ============ 渲染 ============ */
+const formEl = document.getElementById("form");
+
+function render(){
+  const list = orderedList();
+  formEl.innerHTML = "";
+  if(isTerminated()){
+    formEl.innerHTML = '<div class="card"><div class="done"><div class="ic">🙏</div>'
+      + '<h1 style="font-size:18px">感谢参与</h1>'
+      + '<p class="lead">本问卷面向正在备考或近期备考过的在校学生。<br>你的情况不在本次调研范围内，仍然感谢你点开这份问卷。</p></div></div>';
+    document.getElementById("bar").classList.add("hide");
+    return;
+  }
+  let lastGroup = null;
+  for(const q of list){
+    if(q.g && q.g !== lastGroup && q.ty !== "info"){
+      lastGroup = q.g;
+    }
+    formEl.appendChild(buildQ(q));
+  }
+  updateProgress(list);
+}
+
+function buildQ(q){
+  const d = document.createElement("div");
+  d.className = "card";
+  d.dataset.qid = q.id;
+
+  if(q.ty === "info"){
+    const n = document.createElement("div");
+    n.className = "note";
+    n.textContent = q.t;
+    d.appendChild(n);
+    return d;
+  }
+
+  const t = document.createElement("p");
+  t.className = "qt";
+  t.textContent = q.id + ". " + q.t;
+  d.appendChild(t);
+
+  if(q.h){
+    const h = document.createElement("p");
+    h.className = "qh"; h.textContent = q.h;
+    d.appendChild(h);
+  }
+
+  if(q.ty === "radio" || q.ty === "checkbox"){
+    q.opts.forEach((o)=>{
+      const lab = document.createElement("label");
+      lab.className = "opt";
+      const inp = document.createElement("input");
+      inp.type = q.ty === "radio" ? "radio" : "checkbox";
+      inp.name = q.id; inp.value = o;
+      const span = document.createElement("span");
+      span.textContent = o;
+      lab.appendChild(inp); lab.appendChild(span);
+
+      const on = q.ty === "radio" ? A[q.id] === o : (A[q.id]||[]).includes(o);
+      if(on){ lab.classList.add("on"); inp.checked = true; }
+
+      lab.addEventListener("click", e=>{
+        if(e.target !== inp) e.preventDefault();
+        if(q.ty === "radio"){
+          A[q.id] = o;
+          d.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));
+          lab.classList.add("on");
+          inp.checked = true;
+          // 单选触发跳转时重渲染
+          if(q.skipTo || q.end || q.onlyIf){ purgeHidden(); setTimeout(render, 140); }
+          else updateProgress();
+        } else {
+          let cur = A[q.id] || [];
+          const k = cur.indexOf(o);
+          if(k >= 0){ cur.splice(k,1); }
+          else {
+            // 排他项（"只买过资料，没报班""都不记得了""都没试过"）：
+            // 勾上它清空其它项，勾其它项则先去掉它。
+            if(q.excl){
+              if(o === q.excl) cur = [];
+              else cur = cur.filter(x => x !== q.excl);
+            }
+            if(q.max && cur.length >= q.max){
+              // 达到上限，替换最早的一项
+              cur.shift();
+              d.querySelectorAll(".opt").forEach(x=>{
+                const iv = x.querySelector("input");
+                if(iv && !cur.includes(iv.value)) x.classList.remove("on");
+              });
+            }
+            cur.push(o);
+          }
+          A[q.id] = cur;
+          lab.classList.toggle("on", cur.includes(o));
+          inp.checked = cur.includes(o);
+          updateProgress();
+        }
+      });
+      d.appendChild(lab);
+    });
+
+    if(q.max){
+      const tip = document.createElement("p");
+      tip.className = "qh"; tip.style.marginTop = "6px";
+      tip.textContent = "最多选 " + q.max + " 项";
+      d.appendChild(tip);
+    }
+  }
+
+  else if(q.ty === "scale"){
+    const box = document.createElement("div");
+    box.className = "scale";
+    SCALE_LBL.forEach((lbl,i)=>{
+      const lab = document.createElement("label");
+      lab.className = "opt";
+      const span = document.createElement("span");
+      span.textContent = (i+1);
+      const sub = document.createElement("span");
+      sub.textContent = lbl;
+      lab.appendChild(span); lab.appendChild(sub);
+      if(String(A[q.id]) === String(i+1)) lab.classList.add("on");
+      lab.addEventListener("click", ()=>{
+        A[q.id] = i+1;
+        box.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));
+        lab.classList.add("on");
+        updateProgress();
+      });
+      box.appendChild(lab);
+    });
+    d.appendChild(box);
+    const hint = document.createElement("div");
+    hint.className = "qh";
+    hint.style.marginTop = "6px";
+    hint.textContent = "1 = 从不逐条看　5 = 每条都看";
+    d.appendChild(hint);
+  }
+
+  else if(q.ty === "textarea"){
+    const ta = document.createElement("textarea");
+    ta.placeholder = q.ph || "";
+    ta.maxLength = q.maxlen || 200;
+    if(A[q.id] !== undefined) ta.value = A[q.id];
+    ta.addEventListener("input", ()=>{ A[q.id] = ta.value; updateProgress(); });
+    d.appendChild(ta);
+  }
+
+  return d;
+}
+
+/* ============ 进度 ============ */
+const btn = document.getElementById("btn");
+const pbar = document.getElementById("pbar");
+const pctEl = document.getElementById("pct");
+
+/* 固定分母，防止分支收起时进度条倒退 */
+let maxSeen = 0;
+
+function answered(q){
+  const v = A[q.id];
+  if(q.optional) return true;
+  if(q.ty === "info") return true;
+  if(v === undefined || v === null || v === "") return false;
+  if(Array.isArray(v) && v.length === 0) return false;
+  return true;
+}
+
+function updateProgress(list){
+  const L = list || orderedList();
+  const total = L.length;
+  const done = L.filter(answered).length;
+  if(total > maxSeen) maxSeen = total;
+  const denom = Math.max(total, maxSeen);
+  const p = denom ? Math.min(100, Math.round(done/denom*100)) : 0;
+  pbar.style.width = p + "%";
+  pctEl.textContent = p + "%";
+}
+
+/* ============ 提交 ============ */
+function validate(){
+  if(isTerminated()) return {ok:false, term:true};
+  const list = orderedList();
+  for(const q of list){
+    if(!answered(q)) return {ok:false, q};
+  }
+  if(A.Q1 !== "比较不同意") return {ok:false, trap:true};
+  return {ok:true};
+}
+
+function quotaCell(){
+  const map = {"考研":"KAOYAN","国考或省考":"GUOKAO","事业单位或选调":"SHIYE","教师招聘":"JIAOSHI","职业资格":"ZIGE","已考完，暂时不打算再考":"FINISH"};
+  return (map[A.S3] || "NA") + "-" + (A.B2 || "X");
+}
+
+function pathLen(){
+  return orderedList().length;
+}
+
+async function submit(){
+  const v = validate();
+  const errEl = document.getElementById("err");
+  if(!v.ok){
+    errEl.style.display = "block";
+    if(v.trap){ errEl.textContent = "注意力检测题作答有误，请重新检查后提交。"; }
+    else { errEl.textContent = "还有题目未完成：「" + (v.q.t) + "」";
+           const el = document.querySelector('[data-qid="'+v.q.id+'"]');
+           if(el) el.scrollIntoView({behavior:"smooth",block:"center"}); }
+    return;
+  }
+  errEl.style.display = "none";
+  btn.disabled = true; btn.textContent = "提交中…";
+
+  const now = new Date();
+  const dur = Math.max(1, Math.round((now - startedAt)/1000));
+  const nQ = pathLen();
+  const secPerQ = nQ ? +(dur / nQ).toFixed(2) : null;
+
+  /* 只提交当前可见题目的答案，剔除分支切换留下的孤儿答案 */
+  const clean = {};
+  for(const q of orderedList()) if(A[q.id] !== undefined) clean[q.id] = A[q.id];
+
+  const payload = {
+    client_id: clientId,
+    started_at: new Date(startedAt).toISOString(),
+    duration_sec: dur,
+    ip_hash: null,
+    user_agent: navigator.userAgent,
+    screen_size: screen.width + "x" + screen.height,
+    referrer: document.referrer || "direct",
+    quota_cell: quotaCell(),
+    answers: clean,
+    q_s1: A.S1, q_s2: Array.isArray(A.S2)?A.S2.join("|"):A.S2, q_s3: A.S3, q_s4: A.S4, q_s5: A.S2b,
+    q6_total: null,   /* 本版支出为区间题，具体档位见 answers.P1 */
+    q8_class: Array.isArray(A.P3)?A.P3.join("|"):null,
+    q9_xieyi: A.A2,
+    q10_amount: null,  /* 本版为区间题，档位见 answers.A3 */
+    q16_refund: A.R4,
+    d1_gender: A.B1, d2_grade: A.B2, d3_major: A.B3, d4_origin: A.B4,
+    a1_trap_ok: A.Q1 === "比较不同意",
+    a2_sincere: A.Q2 ?? null,
+    analysis_stage: stageOf(),
+    is_valid: true
+  };
+
+  try{
+    const r = await fetch(SUPABASE_URL + "/rest/v1/responses", {
+      method:"POST",
+      headers:{
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type":"application/json",
+        "Prefer":"return=minimal"
+      },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok){
+      const txt = await r.text();
+      throw new Error(r.status + " " + txt.slice(0,200));
+    }
+    submitted = true;
+    document.getElementById("form").innerHTML = "";
+    document.getElementById("intro").classList.add("hide");
+    document.getElementById("done").classList.remove("hide");
+    document.getElementById("bar").classList.add("hide");
+    window.scrollTo(0,0);
+  }catch(e){
+    btn.disabled = false; btn.textContent = "提交";
+    errEl.style.display = "block";
+    errEl.textContent = "提交失败，请检查网络后重试。如反复失败请联系调研员。（" + e.message + "）";
+  }
+}
+
+/* ============ 启动 ============ */
+btn.addEventListener("click", ()=>{
+  if(!startedAt){
+    startedAt = Date.now();
+    document.getElementById("intro").classList.add("hide");
+    render();
+    btn.textContent = "提交";
+    btn.disabled = false;
+    updateProgress();
+    return;
+  }
+  submit();
+});
+</script>
+</body>
+</html>
